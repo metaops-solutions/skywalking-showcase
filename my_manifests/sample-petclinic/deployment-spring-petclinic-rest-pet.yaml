@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: skywalking-spring-petclinic-rest-pet
+    labels:
+      app: skywalking-spring-petclinic-rest-pet
+    namespace: sample-petclinic
+  spec:
+    selector:
+      matchLabels:
+        app: skywalking-spring-petclinic-rest-pet
+    template:
+      metadata:
+        labels:
+          app: skywalking-spring-petclinic-rest-pet
+      spec:
+        containers:
+        - image: antler/skywalking-spring-petclinic-rest-pet:8.8.0
+          name: skywalking-spring-petclinic-rest-pet
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath:  /usr/local/petshop/spring-petclinic-rest-pet/agent/config
+            name: skywalking-agent-spring-petclinic-rest-pet-config
+          - mountPath:  /usr/local/petshop/spring-petclinic-rest-pet/config
+            name: petclinic-config
+#         - mountPath: /usr/local/petshop/spring-petclinic-rest-pet/agent/ca
+#           name: letsencrypt-public-ca
+#           readOnly: true
+          ports:
+          - containerPort: 8010
+          resources:
+            requests:
+              memory: "500Mi"
+            limits:
+              memory: "750Mi"
+          env:
+            # NOTE: the cluster name; update this
+            - name: JAVA_OPTS
+              value: " -Xms256M -Xmx256M"
+        volumes:
+        - name: skywalking-agent-spring-petclinic-rest-pet-config
+          configMap:
+            name: skywalking-agent-spring-petclinic-rest-pet-config
+            items:
+            - key: config
+              path:  agent.config
+        - name: petclinic-config
+          configMap:
+            name: petclinic-config
+            items:
+            - key: config
+              path:  application.properties
+#       - name: letsencrypt-public-ca
+#         secret: 
+#           secretName: letsencrypt-public-ca
+        imagePullSecrets:
+        - name: registrykey
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: skywalking-spring-petclinic-rest-pet
+    labels:
+      app: skywalking-spring-petclinic-rest-pet
+    namespace: sample-petclinic
+  spec:
+    selector:
+      app: skywalking-spring-petclinic-rest-pet
+    ports:
+    - port: 8010
+      name: skywalking-spring-petclinic-rest-pet
+

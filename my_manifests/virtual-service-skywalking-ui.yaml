@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: skywalking-ui
+  namespace: skywalking-showcase
+spec:
+  hosts:
+  - skywalking-showcase.sandbox.metaops.solutions
+  gateways:
+  - istio-system/my-ingress  # can omit the namespace if gateway is in same namespace as virtual service.
+  - mesh
+  http:
+  - name: "skywalking-ui"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: demo-ui.skywalking-showcase.svc.cluster.local
+

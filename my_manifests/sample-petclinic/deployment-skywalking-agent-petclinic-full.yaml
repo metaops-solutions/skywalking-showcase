@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: skywalking-agent-petclinic-full
+    labels:
+      app: skywalking-agent-petclinic-full
+    namespace: sample-petclinic
+  spec:
+    selector:
+      matchLabels:
+        app: skywalking-agent-petclinic-full
+    template:
+      metadata:
+        labels:
+          app: skywalking-agent-petclinic-full
+      spec:
+        containers:
+        - image: antler/skywalking-petclinic-full:latest
+          name: skywalking-agent-petclinic-full
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath:  /usr/local/petclinic/agent/config
+            name: skywalking-agent-petclinic-full-config
+          - mountPath:  /usr/local/petclinic/config
+            name: petclinic-config
+#         - mountPath: /usr/local/petclinic/agent/ca
+#           name: letsencrypt-public-ca
+#           readOnly: true
+          ports:
+          - containerPort: 8010
+          resources:
+            requests:
+              memory: "500Mi"
+            limits:
+              memory: "750Mi"
+          env:
+            # NOTE: the cluster name; update this
+            - name: JAVA_OPTS
+              value: " -Xms256M -Xmx256M"
+        volumes:
+        - name: skywalking-agent-petclinic-full-config
+          configMap:
+            name: skywalking-agent-petclinic-full-config
+            items:
+            - key: config
+              path:  agent.config
+        - name: petclinic-config
+          configMap:
+            name: petclinic-config
+            items:
+            - key: config
+              path:  application.properties
+#       - name: letsencrypt-public-ca
+#         secret: 
+#           secretName: letsencrypt-public-ca
+        imagePullSecrets:
+        - name: registrykey
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: skywalking-agent-petclinic-full
+    labels:
+      app: skywalking-agent-petclinic-full
+    namespace: sample-petclinic
+  spec:
+    selector:
+      app: skywalking-agent-petclinic-full
+    ports:
+    - port: 8010
+      name: skywalking-agent-petclinic-full
+

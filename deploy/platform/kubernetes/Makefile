@@ -91,16 +91,16 @@ feature-event:
 .PHONY: feature-istiod-monitor
 feature-istiod-monitor:
 	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set features.istiodMonitor.enabled=true)
-	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istio.enabled=true --set istiod.global.istioNamespace=$(NAMESPACE) --set base.global.istioNamespace=$(NAMESPACE))
+	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istiod.global.istioNamespace=istio-system --set base.global.istioNamespace=istio-system)
 	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set opentelemetry.enabled=true)
 
 .PHONY: feature-als
 feature-als:
 	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set features.als.enabled=true)
-	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istio.enabled=true)
-	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istiod.meshConfig.defaultConfig.tracing.zipkin.address=$(RELEASE)-oap.$(NAMESPACE).svc:9411)
-	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istiod.meshConfig.defaultConfig.envoyMetricsService.address=$(BACKEND_SERVICE))
-	$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istiod.meshConfig.defaultConfig.envoyAccessLogService.address=$(BACKEND_SERVICE))
+#$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istio.enabled=true)
+#$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istiod.meshConfig.defaultConfig.tracing.zipkin.address=$(RELEASE)-oap.$(NAMESPACE).svc:9411)
+#$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istiod.meshConfig.defaultConfig.envoyMetricsService.address=$(BACKEND_SERVICE))
+#$(eval HELM_OPTIONS := $(HELM_OPTIONS) --set istiod.meshConfig.defaultConfig.envoyAccessLogService.address=$(BACKEND_SERVICE))
 
 .PHONY: feature-satellite
 feature-satellite:

@@ -63,6 +63,7 @@ spec:
         # @feature: java-agent-injector; enable the java agent injector
         swck-java-agent-injected: "true"
         app: gateway
+        namespace: {{ .Values.sampleServices.namespace }}
       annotations:
         sidecar.istio.io/inject: "{{ or .Values.features.als.enabled .Values.features.istiodMonitor.enabled .Values.features.meshWithAgent }}"
         # @feature: java-agent-injector; set the java agent configuration
@@ -123,6 +124,7 @@ spec:
         # @feature: java-agent-injector; enable the java agent injector
         swck-java-agent-injected: "true"
         app: songs
+        namespace: {{ .Values.sampleServices.namespace }}
       annotations:
         sidecar.istio.io/inject: "{{ or .Values.features.als.enabled .Values.features.istiodMonitor.enabled .Values.features.meshWithAgent }}"
         # @feature: java-agent-injector; set the java agent configuration
@@ -185,6 +187,7 @@ spec:
     metadata:
       labels:
         app: recommendation
+        namespace: {{ .Values.sampleServices.namespace }}
       annotations:
         sidecar.istio.io/inject: "{{ or .Values.features.als.enabled .Values.features.istiodMonitor.enabled .Values.features.meshWithAgent }}"
     spec:
@@ -231,6 +234,7 @@ spec:
     metadata:
       labels:
         app: app
+        namespace: {{ .Values.sampleServices.namespace }}
       annotations:
         sidecar.istio.io/inject: "{{ or .Values.features.als.enabled .Values.features.istiodMonitor.enabled .Values.features.meshWithAgent }}"
     spec:
@@ -265,6 +269,7 @@ spec:
     metadata:
       labels:
         app: loadgen
+        namespace: {{ .Values.sampleServices.namespace }}
       annotations:
         sidecar.istio.io/inject: "{{ or .Values.features.als.enabled .Values.features.istiodMonitor.enabled .Values.features.meshWithAgent }}"
     spec:
@@ -367,6 +372,7 @@ spec:
     metadata:
       labels:
         app: frontend
+        namespace: {{ .Values.sampleServices.namespace }}
       annotations:
         sidecar.istio.io/inject: "{{ or .Values.features.als.enabled .Values.features.istiodMonitor.enabled .Values.features.meshWithAgent }}"
     spec:
@@ -435,6 +441,7 @@ spec:
     metadata:
       labels:
         app: activemq
+        namespace: {{ .Values.sampleServices.namespace }}
       annotations:
         sidecar.istio.io/inject: "false"
     spec:

@@ -32,7 +32,7 @@
       regex: __meta_kubernetes_node_label_(.+)
     - source_labels: [ ]
       target_label: cluster
-      replacement: skywalking-showcase
+      replacement: kubernetes-cluster
     - target_label: __address__
       replacement: kubernetes.default.svc:443
     - source_labels: [ __meta_kubernetes_node_name ]
@@ -59,7 +59,7 @@
       regex: __meta_kubernetes_service_label_(.+)
     - source_labels: [ ]
       target_label: cluster
-      replacement: skywalking-showcase
+      replacement: kubernetes-cluster
 
 {{- end }}
 {{- end }}

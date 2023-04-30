@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: mysql
+    labels:
+      app: mysql
+    namespace: sample-petclinic
+  spec:
+    selector:
+      matchLabels:
+        app: mysql
+    template:
+      metadata:
+        labels:
+          app: mysql
+      spec:
+        containers:
+        - image: "mysql:5.7.8"
+          name: mysql
+          imagePullPolicy: Always
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: petclinic
+          - name: MYSQL_DATABASE
+            value: petclinic
+          ports:
+          - containerPort: 3306
+        imagePullSecrets:
+        - name: registrykey
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: mysql
+    labels:
+      app: mysql
+    namespace: sample-petclinic
+  spec:
+    clusterIP: None
+    selector:
+      app: mysql
+    ports:
+    - port: 3306
+      name: mysql
+

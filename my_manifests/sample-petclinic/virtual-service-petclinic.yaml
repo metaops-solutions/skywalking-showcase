@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: skywalking-ui
+  namespace: sample-petclinic
+spec:
+  hosts:
+  - sample-petclinic.sandbox.metaops.solutions
+  gateways:
+  - istio-system/my-ingress  # can omit the namespace if gateway is in same namespace as virtual service.
+  - mesh
+  http:
+  - name: "sample-petclinic"
+    route:
+    - destination:
+        port:
+          number: 8010
+        host: skywalking-agent-petclinic-full.sample-petclinic.svc.cluster.local
+

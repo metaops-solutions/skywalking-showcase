@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: pet-poker
+    labels:
+      app: pet-poker
+    namespace: sample-petclinic
+  spec:
+    selector:
+      matchLabels:
+        app: pet-poker
+    template:
+      metadata:
+        labels:
+          app: pet-poker
+      spec:
+        containers:
+        - image: spotify/alpine
+          name: pet-poker
+          imagePullPolicy: Always
+          command: [ "bash" ]
+          args: [ "/usr/local/petshop/pet_poker.sh" ]
+          volumeMounts:
+          - mountPath:  /usr/local/petshop
+            name: pet-poker-config
+        volumes:
+        - name: pet-poker-config
+          configMap:
+            name: pet-poker-config
+            items:
+            - key: script
+              path: pet_poker.sh
+        imagePullSecrets:
+        - name: registrykey

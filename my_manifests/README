@@ -1,0 +1,6 @@
+to deploy it
+
+make deploy.kubernetes FEATURE_FLAGS=single-node,elasticsearch,so11y,vm-monitor,als,kubernetes-monitor,istiod-monitor,event,trace-profiling
+
+
+

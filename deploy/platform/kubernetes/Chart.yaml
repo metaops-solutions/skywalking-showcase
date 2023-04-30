@@ -45,15 +45,15 @@ dependencies:
     repository: https://prometheus-community.github.io/helm-charts
     condition: kube-state-metrics.enabled
 
-  - name: base
-    version: 1.14.4
-    repository: https://istio-release.storage.googleapis.com/charts
-    condition: istio.enabled
+# - name: base
+#   version: 1.14.4
+#   repository: https://istio-release.storage.googleapis.com/charts
+#   condition: istio.enabled
 
-  - name: istiod
-    version: 1.14.4
-    repository: https://istio-release.storage.googleapis.com/charts
-    condition: istio.enabled
+# - name: istiod
+#   version: 1.14.4
+#   repository: https://istio-release.storage.googleapis.com/charts
+#   condition: istio.enabled
 
   - name: opentelemetry-collector
     version: 0.51.1

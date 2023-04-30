@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  script: |-
+    #!/bin/bash
+    array[0]=skywalking-spring-petclinic-rest-pet:8010/pet?sort
+    array[1]=skywalking-spring-petclinic-rest-pet:8010/pet?size=1
+    array[2]=skywalking-spring-petclinic-rest-pet:8010/pet/search/findPetTypes
+    array[3]=skywalking-spring-petclinic-rest-pet:8010/profile/pet
+    array[4]=skywalking-spring-petclinic-rest-owner:8010/owner?sort
+    array[6]=skywalking-spring-petclinic-rest-owner:8010/profile/owner 
+    array[7]=skywalking-spring-petclinic-rest-owner:8010/owner?page=1
+    array[8]=skywalking-spring-petclinic-rest-system:8010
+    array[9]=skywalking-spring-petclinic-rest-vet:8010/vet
+    array[10]=skywalking-spring-petclinic-rest-vet:8010/vet?page=1
+    array[11]=skywalking-spring-petclinic-rest-vet:8010/vet?sort
+    array[12]=skywalking-spring-petclinic-rest-vet:8010/profile/vet
+    array[13]=skywalking-spring-petclinic-rest-visit:8010/visit
+    array[14]=skywalking-spring-petclinic-rest-visit:8010/profile/visit 
+    array[15]=skywalking-spring-petclinic-rest-visit:8010/visit?page=1
+    array[16]=skywalking-spring-petclinic-rest-owner:8010/owners?lastName=dsad
+    i=0
+    while true
+    do
+      let i=$i+1
+      size=${#array[@]}
+      index=$(($RANDOM % $size))
+      echo ${array[$index]}
+      curl ${array[$index]}
+      sleep .$[ ( $RANDOM % 4 ) + 1 ]s
+      name=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+      petname=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+      id=`echo $[ ( $RANDOM % 1000 ) + 1 ]`
+      if [ $i -gt 100 ]
+      then
+        curl -X POST -F "firstName=$name" -F "lastName=$name" -F 'address=111, Awesome Road' -F 'city=rerere' -F 'telephone=0333333333' http://skywalking-agent-petclinic-full:8010/owners/new
+        curl -X POST -F "firstName=$petname" -F "name=$petname" -F 'birthDate=2018-01-01' -F 'type=bird' -F 'id=' http://skywalking-agent-petclinic-full:8010/owners/$id/pets/new
+        i=0
+      fi
+    done
+metadata:
+  name: pet-poker-config
+  labels:
+    name: pet-poker-config
+  namespace: sample-petclinic
+  
