@@ -19,17 +19,12 @@ items:
           app: skywalking-spring-petclinic-rest-pet
       spec:
         containers:
-        - image: antler/skywalking-spring-petclinic-rest-pet:8.8.0
+        - image: antler/skywalking-spring-petclinic-rest-pet:3d6fc1c
           name: skywalking-spring-petclinic-rest-pet
           imagePullPolicy: Always
           volumeMounts:
-          - mountPath:  /usr/local/petshop/spring-petclinic-rest-pet/agent/config
-            name: skywalking-agent-spring-petclinic-rest-pet-config
           - mountPath:  /usr/local/petshop/spring-petclinic-rest-pet/config
             name: petclinic-config
-#         - mountPath: /usr/local/petshop/spring-petclinic-rest-pet/agent/ca
-#           name: letsencrypt-public-ca
-#           readOnly: true
           ports:
           - containerPort: 8010
           resources:
@@ -41,13 +36,11 @@ items:
             # NOTE: the cluster name; update this
             - name: JAVA_OPTS
               value: " -Xms256M -Xmx256M"
+            - name: SW_AGENT_NAME
+              value: petclinic::petclinic-rest-pet
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: demo-satellite.skywalking-showcase.svc.cluster.local:11800
         volumes:
-        - name: skywalking-agent-spring-petclinic-rest-pet-config
-          configMap:
-            name: skywalking-agent-spring-petclinic-rest-pet-config
-            items:
-            - key: config
-              path:  agent.config
         - name: petclinic-config
           configMap:
             name: petclinic-config

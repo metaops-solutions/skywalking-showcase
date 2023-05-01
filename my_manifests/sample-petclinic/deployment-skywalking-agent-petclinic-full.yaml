@@ -19,17 +19,12 @@ items:
           app: skywalking-agent-petclinic-full
       spec:
         containers:
-        - image: antler/skywalking-petclinic-full:latest
+        - image: antler/skywalking-petclinic-full:3d6fc1c
           name: skywalking-agent-petclinic-full
           imagePullPolicy: Always
           volumeMounts:
-          - mountPath:  /usr/local/petclinic/agent/config
-            name: skywalking-agent-petclinic-full-config
           - mountPath:  /usr/local/petclinic/config
             name: petclinic-config
-#         - mountPath: /usr/local/petclinic/agent/ca
-#           name: letsencrypt-public-ca
-#           readOnly: true
           ports:
           - containerPort: 8010
           resources:
@@ -41,22 +36,17 @@ items:
             # NOTE: the cluster name; update this
             - name: JAVA_OPTS
               value: " -Xms256M -Xmx256M"
+            - name: SW_AGENT_NAME
+              value: petclinic::petclinic-root
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: demo-satellite.skywalking-showcase.svc.cluster.local:11800
         volumes:
-        - name: skywalking-agent-petclinic-full-config
-          configMap:
-            name: skywalking-agent-petclinic-full-config
-            items:
-            - key: config
-              path:  agent.config
         - name: petclinic-config
           configMap:
             name: petclinic-config
             items:
             - key: config
               path:  application.properties
-#       - name: letsencrypt-public-ca
-#         secret: 
-#           secretName: letsencrypt-public-ca
         imagePullSecrets:
         - name: registrykey
 - apiVersion: v1

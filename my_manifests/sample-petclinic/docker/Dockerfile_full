@@ -1,0 +1,14 @@
+FROM ghcr.io/apache/skywalking-showcase/songs-service:3d6fc1c as build
+
+
+FROM antler/skywalking-petclinic-full:latest
+LABEL image=antler/skywalking-petclinic-full:3d6fc1c
+MAINTAINER Andrey Kozichev <akozichev@gmail.com>
+
+RUN rm -rf /usr/local/petclinic/agent
+
+RUN mkdir /usr/local/petclinic/agent
+COPY --from=build /skywalking/agent /usr/local/petclinic/agent/
+
+
+
